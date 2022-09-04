@@ -1,3 +1,14 @@
 from django.db import models
 
-# Create your models here.
+# user
+  # id: guid
+  # handle: string
+
+# conversation
+  # id
+  # users: guid[]
+
+# message
+  # id
+  # timestamp
+  # content
