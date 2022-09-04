@@ -16,11 +16,12 @@ Including another URLconf
 from django.urls import path, include
 from rest_framework import routers
 
-from chat.views import UserViewSet
+from chat.views import ConversationViewSet, UserViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('conversation/<str:username>', ConversationViewSet.as_view({'get': 'list', 'post': 'create'}))
 ]

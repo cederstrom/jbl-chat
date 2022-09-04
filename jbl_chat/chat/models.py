@@ -5,11 +5,8 @@ from django.db import models
 class User(AbstractUser):
     pass
 
-# conversation
-  # id
-  # users: guid[]
 
-# message
-  # id
-  # timestamp
-  # content
+class Message(models.Model):
+    content = models.TextField()
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
