@@ -1,8 +1,9 @@
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-# user
-  # id: guid
-  # handle: string
+
+class User(AbstractUser):
+    pass
 
 # conversation
   # id
