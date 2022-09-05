@@ -18,8 +18,8 @@ class UserViewSet(viewsets.ModelViewSet):
 class MessageSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Message
-        fields = ['content', 'sender', 'receiver']
-        read_only_fields = ['sender', 'receiver']
+        fields = ['content', 'sender', 'receiver', 'datetime_sent']
+        read_only_fields = ['sender', 'receiver', 'datetime_sent']
 
 
 class ConversationViewSet(viewsets.ModelViewSet):

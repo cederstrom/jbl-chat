@@ -15,7 +15,7 @@ class ConversationTests(APITestCase):
         self.bravo = User.objects.create(username='bravo')
         self.charlie = User.objects.create(username='charlie')
 
-        Message.objects.create(content='a -> b', sender=self.alpha, receiver=self.bravo)
+        self.message_a_to_c = Message.objects.create(content='a -> b', sender=self.alpha, receiver=self.bravo)
         Message.objects.create(content='b -> a', sender=self.bravo, receiver=self.alpha)
         Message.objects.create(content='a -> c', sender=self.alpha, receiver=self.charlie)
 
@@ -45,3 +45,17 @@ class ConversationTests(APITestCase):
 
         message_contents = list(map(lambda message: message.content, Message.objects.filter(sender=foo)))
         self.assertEqual(message_contents, ['foo -> bar'])
+
+    def test_messages_has_timestamp(self):
+        self.client.force_authenticate(user=self.alpha)
+        response = self.client.get('/conversation/charlie', format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = json.loads(response.content)
+        timestamps = list(map(lambda message: message['datetime_sent'], data))
+        timestamp_from_api = self.__datetime_str_without_milliseconds(timestamps[0])
+        expected_timestamp = self.__datetime_str_without_milliseconds(self.message_a_to_c.datetime_sent.isoformat())
+        self.assertEqual(timestamp_from_api, expected_timestamp)
+
+    @staticmethod
+    def __datetime_str_without_milliseconds(value):
+        return value.split('.')[0]
